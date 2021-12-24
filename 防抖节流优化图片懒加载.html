@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>防抖节流优化图片懒加载</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        div {
+            width: 100%;
+            height: 800px;
+            background: skyblue;
+            padding: 20px;
+        }
+
+        img {
+            height: 200px;
+            padding: 20px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<div></div>
+<img src="" data-src="img/1.jpg">
+<img src="" data-src="img/2.jpg">
+<img src="" data-src="img/3.jpg">
+<img src="" data-src="img/4.jpg">
+<img src="" data-src="img/5.jpg">
+<img src="" data-src="img/6.jpg">
+<img src="" data-src="img/396.jpg">
+<img src="" data-src="img/397.jpg">
+<img src="" data-src="img/401.jpg">
+</body>
+<script>
+    let num = document.getElementsByTagName('img').length;
+    let img = document.getElementsByTagName('img');
+    let n = 0;      // 存储图片加载到的位置，避免每次都从第一张图片开始遍历
+    let isLoading = false;      //  是否当前容器/页面里的图片已经加载完成
+    let _clientHeight = document.documentElement.clientHeight;  //  可见区域高度
+    let _scrollTop = document.documentElement.scrollTop || document.body.scrollTop; //  滚动条距离顶部的高度
+
+    //  监听窗口变化重新计算可视区域
+    function computedClientHeight() {
+        _clientHeight = document.documentElement.clientHeight;  //  可见区域高度
+    }
+
+    lazyLoad();
+
+    // 页面载入完毕加载可视区域内的图片
+    function lazyLoad() {
+        isLoading = n >= num;
+        _scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        for (let i = 0; i < num; i++) {
+            // 当图片距离浏览器顶部的高度小于可视区域的高度加上滚动高度，图片显示
+            if (img[i].offsetTop < _clientHeight + _scrollTop) {
+                img[i].src = img[i].getAttribute('data-src');
+            }
+            n = i + 1;
+        }
+    }
+
+    /**
+     * 简单的节流函数throttle
+     * @param{*}
+     * func 要执行的函数
+     * delay 延迟
+     * time 在time时间内必须执行一次
+     * flag 是否继续触发节流函数（根据需求自定义，这里就是想，当加载完图片时不需要进行多余的执行-优化）
+     * */
+    function throttle(func, wait, flag) {
+        let timerOut;
+        return function () {
+            if (flag) {
+                return;
+            }
+            if (!timerOut) {
+                timerOut = setTimeout(function () {
+                    timerOut = null;
+                    func();
+                }, wait);
+            }
+        }
+    }
+
+    /**
+     * 简单的防抖函数debounce
+     * @param{*}
+     * callback 要执行的函数
+     * delay 触发函数的时间间隔
+     * */
+    function debounce(callback, delay) {
+        let timer;
+        return function (arg) {
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                callback(arg);
+            }, delay);
+        }
+    }
+
+    // 使用了节流函数-实现性能较好的懒加载
+    window.addEventListener('scroll', throttle(lazyLoad, 100, isLoading));
+
+    // 使用了防抖函数-优化不断触发的窗口变化
+    window.addEventListener('resize', debounce(computedClientHeight, 800));
+
+</script>
+</html>
