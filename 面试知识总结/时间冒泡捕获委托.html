@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button id="btn">生成li</button>
+<ul id="ul">
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+</ul>
+<!--减少对DOM的操作，会极大提高对浏览器性能的消耗-->
+<!--因此事件委托的好处就来了-->
+<!--新生成的DOM元素通过事件委托才能绑定事件-->
+</body>
+<script>
+    let num = 3;
+    let ul = document.getElementsByTagName('ul')[0];
+    // let ul = document.getElementsByTagName('ul');
+    let btn = document.getElementById('btn');
+    let ulDom = document.getElementById('ul');
+
+    btn.onclick = function () {
+        num++;
+        let liDom = document.createElement('li');
+        liDom.innerText = num;
+        ulDom.appendChild(liDom);
+    };
+
+    // [].slice.apply(ul.children).forEach(item => {
+    //     console.log(item);
+    //     item.onclick = function () {
+    //         console.log(this.innerText);
+    //     }
+    // });
+
+
+    // 参数三  true：捕获   false：冒泡
+    ulDom.addEventListener('click', function (e) {
+        console.log(e.target.innerText);
+    }, true);
+</script>
+</html>
