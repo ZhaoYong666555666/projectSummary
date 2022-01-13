@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .father {
+            /*父元素形成BFC的方法*/
+            /*float: left;*/
+            /*position: absolute;*/
+            /*display: inline-block;*/
+            overflow: hidden; /*最优方案*/
+            background: gold;
+        }
+
+        .son {
+            width: 200px;
+            height: 200px;
+            background: orangered;
+            float: left;
+        }
+
+        .son-last {
+            background: gold;
+            width:200px;
+            height: 300px;
+            overflow: hidden;  /*能够阻止覆盖*/
+        }
+    </style>
+</head>
+<body>
+<div class="father">
+    <div class="son">123123</div>
+    <div class="son">123123</div>
+    <div class="son">123123</div>
+    <div class="son-last">qweqwe</div>
+</div>
+<a href="www.baidu.com">百度</a>
+</body>
+</html>

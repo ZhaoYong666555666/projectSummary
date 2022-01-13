@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>表单提交</title>
     <style>
         #subimg {
             border: none;
@@ -37,16 +37,20 @@
 
     function formSubmit(_this) {
         let formData = new FormData(form);
+        formData.append('imgUrl', 'www.baidu.jpg');
         console.log(formData);
         console.log(formData.get('name'));
         console.log(formData.get('user'));
         console.log(formData.get('password'));
+        console.log(formData.get('file'));
+        console.log(formData.get('imgUrl'));
     }
 
     function ome() {
         getfile.click()   //触发上传控件
     }
 
+    // 解析文件上传
     function add(f) {
         console.log(f.files[0].type);    //图片格式
         console.log(f.files[0].size);    //图片大小做判断

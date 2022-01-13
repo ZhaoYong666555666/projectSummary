@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS的事件循环机制</title>
+</head>
+<body>
+
+</body>
+<script>
+    /**
+     * js语言的特点
+     * 单线程 解释性语言
+     *
+     * event-loop
+     * 事件循环机制  由三部分组成
+     * 调用栈  微任务队列  消息队列
+     *
+     * event-loop开始的时候  会从全局一行一行的执行 遇到函数调用  会压入到调用栈中 被压入的函数
+     * 被称之为帧  当函数返回后会从调用栈中弹出
+     * */
+
+
+    /**
+     * js中的异步操作
+     * 比如fetch，setTimeout，setInterval 压入到调用栈中的时候，里面的消息会进入到消息队列中去
+     * 消息队列中 会等到调用栈清空之后在执行
+     * */
+
+    /*function fun1() {
+        console.log(1)
+    }
+
+    function fun2() {
+        fun1();
+        setTimeout(function () {
+            console.log(2)
+        }, 0);
+        console.log(3);
+    }
+
+    fun2();  //   1   3   2*/
+</script>
+<script>
+    // promise async  await 的异步操作的时候会加入到微任务中去，会在调用栈清空的时候立即执行
+
+    console.log('****************************');
+    // 调用栈加入的微任务会立马执行
+    let p = new Promise(resolve => {
+        console.log(4);
+        resolve(5);
+    });
+
+    function func1() {
+        console.log(1);
+    }
+
+    function func2() {
+        setTimeout(function () {
+            console.log(2);
+        }, 0);
+        func1();
+        console.log(3);
+        p.then(resolve => {
+            console.log(resolve);
+        });
+    }
+
+    // resolve会立即执行，但不会输出，等then之后输出
+    func2();    //  调用栈结束，先输出微任务中的  4  1  3  5  2
+
+    // 微任务队列 中的消息 会比 消息队列 中的消息先执行
+</script>
+</html>

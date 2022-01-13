@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>深浅拷贝以及应用</title>
+</head>
+<body>
+
+</body>
+<script>
+    var num = 123;  // 栈内存
+
+    var person = {name: '乔丹', hobby: []};  // 堆内存
+
+    // var person1 = person;
+    // person1.name = '科比';
+    // console.log(person.name);       //科比
+    // console.log(person1.name);      //科比
+    // 这是赋值  不是深浅拷贝
+
+
+    // 赋值和浅拷贝的区别
+    // 浅拷贝
+    // 创建一个新的对象 新 新房间（堆内存）
+    // 层次的理解
+    // 拷贝值（如果属性是一般数据类型 拷贝的就是基本类型的值  如果属性是引用数据类型 那么拷贝的就是 内存的地址）
+    function shallowClone(source) {
+        var newObj = {};
+        for (var i in source) {
+            if (source.hasOwnProperty(i)) {
+                newObj[i] = source[i]
+            }
+        }
+        return newObj;
+    }
+
+    var person2 = shallowClone(person);
+    person2.name = '杜兰特';
+    console.log(person.name);
+    console.log(person2.name);
+
+    //  既然是拷贝么。就不要影响之前的对象
+
+
+    // 深拷贝
+    // 如果属性是引用数据类型  那么就会开辟一个新的房间  不会影响之前堆内存的值
+    //
+    let obj = {};
+    let newObj = JSON.parse(JSON.stringify(obj));       //  深拷贝
+</script>
+</html>

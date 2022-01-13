@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<a href="">1</a>
+<a href="">2</a>
+<a href="">3</a>
+<div><span>13</span></div>
+<div><span>23</span></div>
+<div>34</div>
+<div>142</div>
+</body>
+<script>
+    // 伪数组：有数组的length属性，可以使用数组的索引，但不能使用数组的方法
+    let a = document.querySelectorAll('*');     //  获取到一个伪数组，不是一个真正的数组，不能使用数组的方法
+    console.log(a);
+    a = Array.prototype.slice.apply(a);         //  使用原生js将伪数组转变成真正的数组
+    a = a.map(item => {
+        return item.tagName;
+    });
+
+    // 对数组进行去重
+    /*// 最原始的方法
+    let arr = [];
+    a.forEach(m => {
+        if (arr.indexOf(m) === -1) {
+            arr.push(m)
+        }
+    });*/
+
+    // 使用es6的方法去重
+    a = new Set(a);     // 使用Set方法获取到一个去重的Set集合
+    a = Array.from(a);  //  将Set集合转变成真正的数组
+    console.log(a);
+
+
+    /**
+     * 以下是es6数组的新方法
+     * */
+    let obj = [
+        {id: 1, name: '张三'},
+        {id: 2, name: '李四'},
+        {id: 3, name: '王五'},
+        {id: 4, name: '铁流'}
+    ];
+
+    let id = 3;
+    // 从obj中找到id是3的人员名称
+    let person;
+
+    // map方法
+    // map返回数组（可以筛选出自己想要的数据，比如具体的某一个key的value）
+    // 应用场景：要返回一个要利用原数组经过运算后的数组，或者是在一个对象数组中要拿到某一个属性，并且返回一个新数组的情况
+    // person = obj.map(item => {
+    //     return item.name;
+    // });
+    // console.log(person);
+
+
+    // filter方法
+    // 1、筛选出符合条件的组成一个新数组
+    // 2、筛选出符合多个条件的对象数组中的一些元素，组成新数组或者是直接覆盖原数组
+    /*person = obj.filter(item => {
+        return item.id === id;
+    });
+    console.log(person);*/
+
+    // find方法
+    // 在对象数组中，找到符合要求的对象,只能找到第一个符合要求的，返回的是数组中的某一项
+    person = obj.find(item => {
+        return item.id === id;
+    });
+    console.log(person);
+
+
+    // some（）和every（）方法
+    /**
+     * some（）和every（）方法
+     * some()方法只要有一个满足就行，every（）方法要所有的满足才可以，
+     * 即some（）：一真即真，every（）：一假即假，跟逻辑运算符差不多
+     * 最终结果返回的是一个布尔值
+     */
+    let computers = [
+        {name: "apple", ram: 4},
+        {name: "IBM", ram: 16},
+        {name: "Acer", ram: 32},
+        {name: "ASUS", ram: 64},
+    ];
+
+    let some, every;
+    some = computers.some(item => {
+        return item.ram > 16;
+    });     //  最终结果是true，相当于
+
+    every = computers.every(item => {
+        return item.ram > 16;
+    });     //  最终结果是false
+
+    // reduce（）方法
+    // reduce（function（sum,number）{...},0）要有两个参数，第一个参数一定要初始化
+
+    // 一：代替map做一些简单的运算
+    let numbers = [10, 20, 30];
+    let num;
+    num = numbers.reduce((sum, number) => {
+        console.log(sum);
+        return sum + number;
+    }, 0);
+    console.log(num);
+
+    // 将一个对象数组中的某些属性的值抽出来，组成一个新的数组
+    let colors = [
+        {color: 'pink'},
+        {color: 'red'},
+        {color: 'green'},
+    ];
+    let newColor;
+    newColor = colors.reduce((colorArray, color) => {
+        console.log(colorArray);
+        colorArray.push(color.color);
+        return colorArray;
+    }, []);
+    console.log(newColor);
+</script>
+</html>
